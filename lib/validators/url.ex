@@ -71,9 +71,9 @@ defmodule EctoCommons.URLValidator do
   end
 
   defp do_validate_url(value, _parsed, :parsable) do
-    case :http_uri.parse(String.to_charlist(value)) do
-      {:ok, _uri} -> :ok
-      {:error, _msg} -> :error
+    case :uri_string.parse(String.to_charlist(value)) do
+      %{scheme: _, host: _, path: _} -> :ok
+      _ -> :error
     end
   end
 

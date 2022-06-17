@@ -29,6 +29,7 @@ defmodule EctoCommons.URLValidatorTest do
     {"http://code.google.com/events/#&product=browser", []},
     {"http://j.mp", []},
     {"ftp://foo.bar/baz", []},
+    {"ftps://foo.bar/", []},
     {"http://foo.bar/?q=Test%20URL-encoded%20stuff", []},
     {"http://-.~_!$&()*+,;=:%40:80%2f::::::@example.com", []},
     {"http://1337.net", []},
@@ -41,6 +42,8 @@ defmodule EctoCommons.URLValidatorTest do
     {"http://[::192.9.5.5]/ipng", []},
     {"http://[::FFFF:129.144.52.38]:80/index.html", []},
     {"http://[2010:836B:4179::836B:4179]", []},
+    {"rdar://1234", []},
+    {"h://test", []},
 
     # Checks without `:parsable` because of UTF8 symbols
     {"http://✪df.ws/123", [checks: [:empty, :scheme, :host]]},
@@ -68,11 +71,8 @@ defmodule EctoCommons.URLValidatorTest do
     {"http://", []},
     {"http:///a", []},
     {"foo.com", []},
-    {"rdar://1234", []},
-    {"h://test", []},
     {":// should fail", []},
     {"://", []},
-    {"ftps://foo.bar/", []},
 
     # Add additional check with http_regexp
     {"http://.", [checks: [:parsable, :empty, :scheme, :host, :http_regexp]]},
